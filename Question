@@ -1,0 +1,89 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+typedef struct submarineCable
+{
+	char nome[50];
+	char empresa[50];
+	int data;
+	int tamanho;
+	char ponto[50];
+	char pais[50];
+	
+}SC;
+
+int qtdLinhas();
+void addCable(FILE *arq_pegar, int tamanho);
+void imprimirCables(FILE *arq_pegar, int tamanho);
+
+SC vetor[2000];
+
+int main()
+{
+ 	int tamanho;
+ 	
+	FILE *arq_pegar = fopen("trabalho.txt","r");			
+		if(arq_pegar == NULL)
+		{
+			exit(1);
+		}
+	
+	tamanho = qtdLinhas();
+    tamanho++;
+	
+	addCable(arq_pegar,tamanho);
+	imprimirCables(arq_pegar,tamanho);
+	
+	fclose(arq_pegar);
+	
+	
+}
+
+void addCable(FILE *arq_pegar, int tamanho){
+
+	int i;
+	char caracter;
+
+	
+	for(i = 0;i < tamanho; i++)
+	{
+		fscanf(arq_pegar,"%s %s %i %i %s %s",&vetor[i].nome,&vetor[i].empresa,&vetor[i].data,&vetor[i].tamanho,&vetor[i].ponto,&vetor[i].pais);
+	}
+		
+}
+
+void imprimirCables(FILE *arq_pegar, int tamanho){
+	int i;
+	
+	for(i = 0;i < tamanho; i++)
+	{
+		printf("Nome: %s, Empresa: %s, Data: %i, Tamanho: %i Km, Ponto: %s, Pais: %s\n\n",vetor[i].nome,vetor[i].empresa,vetor[i].data,vetor[i].tamanho,vetor[i].ponto,vetor[i].pais);
+	}
+}
+
+int qtdLinhas()
+{
+	FILE *arq_pegar = fopen("trabalho.txt","r");
+	char caracter;
+	int j;
+	
+	if(arq_pegar == NULL)
+	{
+		exit(1);
+	}
+	
+	while (!feof(arq_pegar))
+	{
+		caracter = fgetc(arq_pegar);
+		  
+        if (caracter == '\n')
+			 {
+             	j++;
+             } 
+	}
+
+    fclose(arq_pegar);
+    return j;
+}
